@@ -1,0 +1,160 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: verdana;
+}
+  
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 12vh;
+    background-color: #012d9d;
+}
+  
+h1 {
+    color: rgb(10, 238, 10);
+    text-align: center;
+}
+  
+.digit {
+    font-size: 50px;
+    color: #fff;
+}
+  
+.txt {
+    font-size: 30px;
+    color: #fffcd6;
+}
+
+.sidenav {
+    height: 100%;
+    width: 35vh;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.5s;
+}
+
+.sidenav .link {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav .link:hover {
+    color: #f1f1f1;
+}
+
+.title {
+    color: #012d9d;
+    font-size: 1.8rem;
+    padding: 20px;
+}
+
+.container .tag {
+    color: #f1f1f1;
+    font-size: 1.8rem;
+    padding: 20px;
+    justify-content: right;
+}
+  
+#buttons {
+    margin-top: 50px;
+}
+  
+.btn {
+    width: 100px;
+    padding: 10px 15px;
+    margin: 0px 20px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: 0.5s;
+    color: white;
+    font-weight: 500;
+}
+
+input {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+}
+
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+#reset {
+    background-color: #3e7fda;
+}
+
+#form-button {
+    background-color: #3e7fda;
+    width: 50px;
+    height: 25px;
+}
+
+#timers-complete-button {
+    background-color: #3e7fda;
+    width: 235px;
+    height: 50px;
+}
+
+#timers-end-button {
+    background-color: #3e7fda;
+    width: 470px;
+    height: 50px;
+}
+
+.textInput {
+    display: inline-block;
+}
+
+#subTitle {
+    font-size: 12px;
+}
+
+#card {
+    font-size: 15px;
+}
+
+Text {
+    display: inline-block;
+}
+
+.left {
+    flex: 50%;
+
+}
+
+.center {
+    flex: 50%;
+
+}
+
+.right {
+    flex: 50%;
+}
+  
+/* Clear floats after the columns */
+.row {
+    display: flex;
+}
+
+

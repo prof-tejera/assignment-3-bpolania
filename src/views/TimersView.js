@@ -96,27 +96,25 @@ const TimersView = () => {
     let timer = undefined;
     for (let i = 0; i < timers.length; i++) {
       if (timers[i].title === "Stopwatch") {
-        timer = { title: timers[i].title, id: timers[i].id, C: <Stopwatch comment={timers[i].comment} id={timers[i].id}/> };
+        timer = { title: timers[i].title, id: timers[i].id, comment: timers[i].comment, C: <Stopwatch id={timers[i].id}/> };
       }
       if (timers[i].title === "Countdown") {
-        timer = { title: timers[i].title, id: timers[i].id, C: <Countdown 
+        timer = { title: timers[i].title, id: timers[i].id,comment: timers[i].comment, C: <Countdown 
           hours={timers[i].C.props.hours}
           minutes={timers[i].C.props.minutes}
           seconds={timers[i].C.props.seconds}
-          comment={timers[i].C.props.comment}
           id={timers[i].id}/> };
       }
       if (timers[i].title === "XY") {
-        timer = { title: timers[i].title, id: timers[i].id, C: <XY 
+        timer = { title: timers[i].title, id: timers[i].id, comment: timers[i].comment, C: <XY 
           hours={timers[i].C.props.hours}
           minutes={timers[i].C.props.minutes}
           seconds={timers[i].C.props.seconds}
           rounds={timers[i].rounds}
-          comment={timers[i].C.props.comment}
           id={timers[i].id}/> };
       }
       if (timers[i].title === "Tabata") {
-        timer = { title: timers[i].title, id: timers[i].id, rounds: timers[i].rounds, C: <Tabata 
+        timer = { title: timers[i].title, id: timers[i].id, rounds: timers[i].rounds, comment: timers[i].comment, C: <Tabata 
           work={{
             hours:timers[i].C.props.work.hours,
             minutes:timers[i].C.props.work.minutes,
@@ -128,7 +126,6 @@ const TimersView = () => {
             seconds:timers[i].C.props.rest.seconds
           }}
           rounds={timers[i].rounds}
-          comment={timers[i].C.props.comment}
           id={timers[i].id}/>,
           currentRound: timers[i].currentRound,
           workingStatus: timers[i].workingStatus

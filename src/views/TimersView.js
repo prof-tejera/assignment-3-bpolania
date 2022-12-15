@@ -96,13 +96,14 @@ const TimersView = () => {
     let timer = undefined;
     for (let i = 0; i < timers.length; i++) {
       if (timers[i].title === "Stopwatch") {
-        timer = { title: timers[i].title, id: timers[i].id, C: <Stopwatch id={timers[i].id}/> };
+        timer = { title: timers[i].title, id: timers[i].id, C: <Stopwatch comment={timers[i].comment} id={timers[i].id}/> };
       }
       if (timers[i].title === "Countdown") {
         timer = { title: timers[i].title, id: timers[i].id, C: <Countdown 
           hours={timers[i].C.props.hours}
           minutes={timers[i].C.props.minutes}
           seconds={timers[i].C.props.seconds}
+          comment={timers[i].C.props.comment}
           id={timers[i].id}/> };
       }
       if (timers[i].title === "XY") {
@@ -111,6 +112,7 @@ const TimersView = () => {
           minutes={timers[i].C.props.minutes}
           seconds={timers[i].C.props.seconds}
           rounds={timers[i].rounds}
+          comment={timers[i].C.props.comment}
           id={timers[i].id}/> };
       }
       if (timers[i].title === "Tabata") {
@@ -126,6 +128,7 @@ const TimersView = () => {
             seconds:timers[i].C.props.rest.seconds
           }}
           rounds={timers[i].rounds}
+          comment={timers[i].C.props.comment}
           id={timers[i].id}/>,
           currentRound: timers[i].currentRound,
           workingStatus: timers[i].workingStatus
@@ -194,9 +197,9 @@ const TimersView = () => {
           <TimerTitle>{timer.title}</TimerTitle>
           {timer.currentRound ? <TimerRound>Round {timer.currentRound}/{timer.rounds}</TimerRound> : null}
           <TimerWorkStatus>{timer.workingStatus}</TimerWorkStatus>
+          <TimerTitle>{timer.comment}</TimerTitle>
           {timer.C}
-        </Timer>
-        
+        </Timer> 
       ))}
       {timers.length > 0 ? buttons : null}
       {timers.length > 0 ? endButton : null}

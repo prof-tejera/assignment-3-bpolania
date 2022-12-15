@@ -1,6 +1,6 @@
 import  Card  from '../generic/Card'
 
-const TabataCard = ({hours, minutes, seconds, restHours, restMinutes, restSeconds, rounds, onClick, id}) => {
+const TabataCard = ({hours, minutes, seconds, restHours, restMinutes, restSeconds, rounds, onClick, id, comment}) => {
 
   return (
     <Card 
@@ -15,6 +15,7 @@ const TabataCard = ({hours, minutes, seconds, restHours, restMinutes, restSecond
       rounds={rounds}
       onClick={onClick}
       id={id}
+      comment={comment}
     />
     )
 };

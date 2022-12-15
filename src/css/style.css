@@ -123,7 +123,16 @@ button[disabled]{
 }
 
 .textInput {
+    width: 25px;
+    height: 25px;
     display: inline-block;
+}
+
+.commentInput {
+    width: 115px;
+    height: 25px;
+    display: inline-block;
+    
 }
 
 #subTitle {

@@ -38,11 +38,17 @@ const Form = ({ title, onClick, onChange, id }) => {
     time =
     <div>
       <div id="subTitle">{"Set Time"}</div>
+      <div id="subTitle"><Text id={`${id}-comment`} className={"commentInput"} placeholder={"Short description"} onChange={onChange}/></div>      
       <Text style={inline} id={`${id}-hours`}className={"textInput"} onChange={onChange}/>
       <div style={inline}>:</div>
       <Text style={inline} id={`${id}-minutes`} className={"textInput"} onChange={onChange}/>
       <div style={inline}>:</div>
       <Text style={inline} id={`${id}-seconds`} className={"textInput"} onChange={onChange}/>
+    </div>
+  } else {
+    time =
+    <div>
+      <div id="subTitle"><Text id={`${id}-comment`} className={"commentInput"} placeholder={"Short description"} onChange={onChange}/></div>      
     </div>
   }
   if (id === "xy" || id === "t") {

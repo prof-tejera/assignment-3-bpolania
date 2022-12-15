@@ -1,7 +1,7 @@
 import React from "react";
 import  Button  from '../generic/Button'
 
-const Card = ({ type, title, hours, minutes, seconds, restHours, restMinutes, restSeconds, rounds, onClick, id }) => {
+const Card = ({ type, title, hours, minutes, seconds, restHours, restMinutes, restSeconds, rounds, onClick, id, comment }) => {
   let mainTimerTitle;;
   let timer;
   let restTimer;
@@ -26,7 +26,7 @@ const Card = ({ type, title, hours, minutes, seconds, restHours, restMinutes, re
         {seconds}</span>
       <span className="txt" id="card"> Sec </span>
     </div>
-  }
+  } 
   if (type === "xy" || type === "t") {
     round = <div>
       <span className="digit" id="card">
@@ -51,6 +51,7 @@ const Card = ({ type, title, hours, minutes, seconds, restHours, restMinutes, re
   return (
     <div className="container">
       <div>{title}</div>
+      <div>{comment}</div>
       {timer}
       {restTimer}
       {round}

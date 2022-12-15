@@ -42,9 +42,10 @@ const AddView = () => {
   const cardsQueue = useRef([]);
   const [length, setLength] = useState(0);
 
-  const [countdownTimerInfo] = useState({hours:"00", minutes:"00", seconds:"00"});
-  const [xyTimerInfo] = useState({hours:"00", minutes:"00", seconds:"00", rounds:"00"});
-  const [tabataTimerInfo] = useState({hours:"00", minutes:"00", seconds:"00", rest_hours:"00", rest_minutes:"00", rest_seconds:"00", rounds:"00"});
+  const [stopwatchTimerInfo] = useState({comment:""});
+  const [countdownTimerInfo] = useState({hours:"00", minutes:"00", seconds:"00", comment:""});
+  const [xyTimerInfo] = useState({hours:"00", minutes:"00", seconds:"00", rounds:"00", comment:""});
+  const [tabataTimerInfo] = useState({hours:"00", minutes:"00", seconds:"00", rest_hours:"00", rest_minutes:"00", rest_seconds:"00", rounds:"00", comment:""});
 
   useEffect(() => {
   }, [length, cardsQueue])
@@ -60,12 +61,13 @@ const AddView = () => {
   }
 
   const handleAddStopwatchClick = () => {
-    addTimer({ title: "Stopwatch", id: getCurrentId() + 1, C: <Stopwatch id={getCurrentId() + 1}/> });
-    addCard({id: getCurrentId() + 1, C:<StopwatchCard id={getCurrentId() + 1} onClick={handleDeleteClick}/>});
+    addTimer({ title: "Stopwatch", id: getCurrentId() + 1, comment: stopwatchTimerInfo.comment, C: <Stopwatch id={getCurrentId() + 1}/> });
+    addCard({id: getCurrentId() + 1, C:<StopwatchCard comment={stopwatchTimerInfo.comment} id={getCurrentId() + 1} onClick={handleDeleteClick}/>});
   }
   const handleAddCountdownClick = () => {
     addTimer({ title: "Countdown", 
           id: getCurrentId() + 1,
+          comment: countdownTimerInfo.comment,
           C: <Countdown 
           hours={countdownTimerInfo.hours} 
           minutes={countdownTimerInfo.minutes} 
@@ -77,6 +79,7 @@ const AddView = () => {
           hours={countdownTimerInfo.hours} 
           minutes={countdownTimerInfo.minutes} 
           seconds={countdownTimerInfo.seconds} 
+          comment={countdownTimerInfo.comment}
           id={getCurrentId() + 1} 
           onClick={handleDeleteClick}/>});
   }
@@ -84,11 +87,12 @@ const AddView = () => {
     addTimer({ title: "XY", 
           id: getCurrentId() + 1,
           rounds: xyTimerInfo.rounds,
+          comment: xyTimerInfo.comment,
           C: <XY 
           hours={xyTimerInfo.hours} 
           minutes={xyTimerInfo.minutes} 
           seconds={xyTimerInfo.seconds} 
-          rounds={xyTimerInfo.rounds} 
+          rounds={xyTimerInfo.rounds}
           id={getCurrentId() + 1} />, 
           currentRound: newRound.value ? newRound.value : 1});
     addCard({id: getCurrentId() + 1, 
@@ -97,6 +101,7 @@ const AddView = () => {
           minutes={xyTimerInfo.minutes} 
           seconds={xyTimerInfo.seconds} 
           rounds={xyTimerInfo.rounds}
+          comment={xyTimerInfo.comment}
           id={getCurrentId() + 1}
           onClick={handleDeleteClick}/>});
   }
@@ -104,10 +109,11 @@ const AddView = () => {
     addTimer({ title: "Tabata",
         id: getCurrentId() + 1,
         rounds: tabataTimerInfo.rounds,
+        comment: tabataTimerInfo.comment,
         C: <Tabata 
         work={{hours:tabataTimerInfo.hours, minutes:tabataTimerInfo.minutes, seconds:tabataTimerInfo.seconds}} 
         rest={{hours:tabataTimerInfo.rest_hours, minutes:tabataTimerInfo.rest_minutes, seconds:tabataTimerInfo.rest_seconds}} 
-        rounds={tabataTimerInfo.rounds} 
+        rounds={tabataTimerInfo.rounds}
         id={getCurrentId() + 1}/>, 
         currentRound: newRound.value ? newRound.value : 1, 
         workingStatus: newWorkingStatus.value ? newWorkingStatus.value : "Work!!!"});
@@ -120,6 +126,7 @@ const AddView = () => {
               restMinutes={tabataTimerInfo.rest_minutes} 
               restSeconds={tabataTimerInfo.rest_seconds} 
               rounds={tabataTimerInfo.rounds}
+              comment={tabataTimerInfo.comment}
               id={getCurrentId() + 1}
               onClick={handleDeleteClick}/>});
   }
@@ -129,6 +136,7 @@ const AddView = () => {
 
   const handleOnChange = (event) => {
     const ids = event.target.id.split("-");
+    console.log("hhh",ids);
     if (ids[0]==='c') {
       if (ids[1]==='hours') {
         countdownTimerInfo.hours = event.target.value;
@@ -138,7 +146,9 @@ const AddView = () => {
         countdownTimerInfo.seconds = event.target.value;
       } else if (ids[1]==='rounds') {
         countdownTimerInfo.rounds = event.target.value;
-      }
+      } else if (ids[1]==='comment') {
+        countdownTimerInfo.comment = event.target.value;
+      } 
     } else if (ids[0]==='xy') {
       if (ids[1]==='hours') {
         xyTimerInfo.hours = event.target.value;
@@ -148,7 +158,9 @@ const AddView = () => {
         xyTimerInfo.seconds = event.target.value;
       } else if (ids[1]==='rounds') {
         xyTimerInfo.rounds = event.target.value;
-      }
+      } else if (ids[1]==='comment') {
+        xyTimerInfo.comment = event.target.value;
+      } 
     } else if (ids[0]==='t') {
       if (ids[1]==='hours') {
         tabataTimerInfo.hours = event.target.value;
@@ -158,7 +170,9 @@ const AddView = () => {
         tabataTimerInfo.seconds = event.target.value;
       } else if (ids[1]==='rounds') {
         tabataTimerInfo.rounds = event.target.value;
-      } else if (ids[1]==='rest') {
+      } else if (ids[1]==='comment') {
+        tabataTimerInfo.comment = event.target.value;
+      }  else if (ids[1]==='rest') {
         if (ids[2]==='hours') {
           tabataTimerInfo.rest_hours = event.target.value;
         } else if (ids[2]==='minutes') {
@@ -167,6 +181,11 @@ const AddView = () => {
           tabataTimerInfo.rest_seconds = event.target.value;
         }
       }
+    } else if (ids[0]==='s') {
+      if (ids[1]==='comment') {
+        console.log("hhh",event.target.value);
+        stopwatchTimerInfo.comment = event.target.value;
+      } 
     }
   }
 
@@ -201,7 +220,7 @@ const AddView = () => {
       <div className="center">
         <div className="title" >Timers after Timers</div>
         <div>
-          <Form key={`timer-Stopwatch`} id={"s"} title={"Stopwatch"} onClick={handleAddStopwatchClick}/>
+          <Form key={`timer-Stopwatch`} id={"s"} title={"Stopwatch"} onClick={handleAddStopwatchClick} onChange={handleOnChange}/>
           <Form key={`timer-Countdown`} id={"c"} title={"Countdown"} onClick={handleAddCountdownClick} onChange={handleOnChange}/>
           <Form key={`timer-XY`} id={"xy"} title={"XY"} onClick={handleAddXYClick} onChange={handleOnChange}/>
           <Form key={`timer-Tabata`} id={"t"} title={"Tabata"} onClick={handleAddTabataClick} onChange={handleOnChange}/>

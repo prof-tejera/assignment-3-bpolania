@@ -81,7 +81,8 @@ const Stopwatch = ({id}, visibility='block') => {
             title={"Delete"}
             disabled={false}></Button>}
           visibility={visibility}
-          />  
+          />
+          
     )
 }
 

@@ -8,7 +8,7 @@ import { useInterval } from 'usehooks-ts'
 import { useTimers } from "../contexts/TimersContext";
 
 
-const Countdown = ({hours, minutes, seconds, id, visibility='block'}) => {
+const Countdown = ({hours, minutes, seconds, id, comment, visibility='block'}) => {
   const [timer, setTimer] = useState('00:00:00');
   const [isPaused, setIsPaused] = useState(true);
   const [time, setTime] = useState(0);

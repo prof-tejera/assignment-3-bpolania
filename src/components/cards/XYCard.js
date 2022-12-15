@@ -1,6 +1,6 @@
 import  Card  from '../generic/Card'
 
-const XY = ({hours, minutes, seconds, rounds, id, onClick}) => {
+const XY = ({hours, minutes, seconds, rounds, id, onClick, comment}) => {
 
   return (
     <Card 
@@ -12,6 +12,7 @@ const XY = ({hours, minutes, seconds, rounds, id, onClick}) => {
       rounds={rounds}
       onClick={onClick}
       id={id}
+      comment={comment}
     />
   )
 };

@@ -1,6 +1,6 @@
 import  Card  from '../generic/Card'
 
-const CountdownCard = ({hours, minutes, seconds, id, onClick}) => {
+const CountdownCard = ({hours, minutes, seconds, id, onClick, comment}) => {
 
   return (
     <Card
@@ -11,6 +11,7 @@ const CountdownCard = ({hours, minutes, seconds, id, onClick}) => {
       seconds={seconds}
       onClick={onClick}
       id={id}
+      comment={comment}
     />
     )
 };

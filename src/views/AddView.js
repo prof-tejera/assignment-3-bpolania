@@ -15,6 +15,8 @@ import { useEffect } from "react";
 import  Button  from '../components/generic/Button'
 import  Form  from '../components/generic/Form'
 
+import {ErrorBoundary} from 'react-error-boundary'
+
 import '../css/style.css'; 
 
 const Cards = styled.div`
@@ -182,6 +184,7 @@ const AddView = () => {
   }
   const handleDoneClick = () => {
     setTimers(timersQueue.current);
+    localStorage.setItem("total",0);
   }
 
   const handleOnChange = (event) => {
@@ -267,7 +270,23 @@ const AddView = () => {
     return result;
   }
 
+  function ErrorFallback({error, resetErrorBoundary}) {
+    return (
+      <div role="alert">
+        <p>Something went wrong:</p>
+        <pre>{error.message}</pre>
+        <button onClick={resetErrorBoundary}>Try again</button>
+      </div>
+    )
+  }
+
   return (
+    <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+    onReset={() => {
+      // reset the state of your app so the error doesn't happen again
+    }}
+  >
     <div className="row">
       <div className="left">
         
@@ -298,6 +317,8 @@ const AddView = () => {
         {cardsQueue.current.length > 0 ? <Button title={"Add Timers"} onClick={handleDoneClick} className={"form"} id={"timers-complete-button"}/> : null}
       </div>
     </div>
+  </ErrorBoundary>
+    
   );
 };
 

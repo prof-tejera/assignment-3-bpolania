@@ -7,6 +7,7 @@ import '../../css/style.css';
 import { useInterval } from 'usehooks-ts'  
 import { useTimers } from "../contexts/TimersContext";
 
+import {ErrorBoundary} from 'react-error-boundary'
 
 const Countdown = ({hours, minutes, seconds, id, isEditing, visibility='inline-block'}) => {
   const [timer, setTimer] = useState('00:00:00');
@@ -129,7 +130,24 @@ const Countdown = ({hours, minutes, seconds, id, isEditing, visibility='inline-b
     setTimeTo(t);
   }
 
+  function ErrorFallback({error, resetErrorBoundary}) {
+    return (
+      
+      <div role="alert">
+        <p>Something went wrong:</p>
+        <pre>{error.message}</pre>
+        <button onClick={resetErrorBoundary}>Try again</button>
+      </div>
+    )
+  }
+
   return (
+    <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+    onReset={() => {
+      // reset the state of your app so the error doesn't happen again
+    }}
+  >
     <Display 
       timer={timer} 
       del={<Button 
@@ -148,6 +166,8 @@ const Countdown = ({hours, minutes, seconds, id, isEditing, visibility='inline-b
       isEditing={isEditing}
       tid={_id.current}
     />
+  </ErrorBoundary>
+    
     )
 }
 

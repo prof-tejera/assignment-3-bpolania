@@ -6,6 +6,8 @@ import  Display  from '../generic/Display'
 
 import { useTimers } from "../contexts/TimersContext";
 
+import {ErrorBoundary} from 'react-error-boundary'
+
 const Stopwatch = ({id}, visibility='block') => {
     let [elapsedTime, setElapsedTime] = useState(0);
     let [isPaused, setIsPaused] = useState(true);
@@ -72,8 +74,24 @@ const Stopwatch = ({id}, visibility='block') => {
       setIsPaused(!isPaused);
     }
 
+    function ErrorFallback({error, resetErrorBoundary}) {
+      return (
+        <div role="alert">
+          <p>Something went wrong:</p>
+          <pre>{error.message}</pre>
+          <button onClick={resetErrorBoundary}>Try again</button>
+        </div>
+      )
+    }
+
     return(
-      <Display 
+      <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+    onReset={() => {
+      // reset the state of your app so the error doesn't happen again
+    }}
+  >
+    <Display 
           timer={hours + ":" + minutes + ":" + seconds}
           del={<Button 
             onClick={handleDeleteClick} 
@@ -83,6 +101,8 @@ const Stopwatch = ({id}, visibility='block') => {
             disabled={false}></Button>}
           visibility={visibility}
           />
+  </ErrorBoundary>
+      
           
     )
 }

@@ -6,6 +6,8 @@ import  Display  from '../generic/Display'
 import { useInterval } from 'usehooks-ts'
 import { useTimers } from "../contexts/TimersContext";
 
+import {ErrorBoundary} from 'react-error-boundary'
+
 const Tabata = ({work, rest, rounds, id, isEditing, visibility='block'}) => {
 
   const [timer, setTimer] = useState('00:00:00');
@@ -136,9 +138,25 @@ const Tabata = ({work, rest, rounds, id, isEditing, visibility='block'}) => {
       if  (r > rounds) setNewWorkingStatus({id:_id.current, value: "Complete"})
       if  (r === 0) setNewWorkingStatus({id:_id.current, value: "Get Ready!"})
     }
+
+    function ErrorFallback({error, resetErrorBoundary}) {
+      return (
+        <div role="alert">
+          <p>Something went wrong:</p>
+          <pre>{error.message}</pre>
+          <button onClick={resetErrorBoundary}>Try again</button>
+        </div>
+      )
+    }
   
     return (
-      <Display 
+      <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+    onReset={() => {
+      // reset the state of your app so the error doesn't happen again
+    }}
+  >
+    <Display 
         timer={timer} 
         del={<Button 
             onClick={handleDeleteClick} 
@@ -156,6 +174,8 @@ const Tabata = ({work, rest, rounds, id, isEditing, visibility='block'}) => {
         isEditing={isEditing}
         tid={_id.current}
       />
+  </ErrorBoundary>
+      
       )
   };
 

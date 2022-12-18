@@ -6,6 +6,8 @@ import  Display  from '../generic/Display'
 import { useInterval } from 'usehooks-ts'
 import { useTimers } from "../contexts/TimersContext";
 
+import {ErrorBoundary} from 'react-error-boundary'
+
 const XY = ({hours, minutes, seconds, rounds, id, isEditing, visibility='block'}) => {
 
 const [timer, setTimer] = useState('00:00:00');
@@ -126,7 +128,23 @@ const _id = useRef(id);
     setNewRound({id:0, value: r});
   }
 
+  function ErrorFallback({error, resetErrorBoundary}) {
+    return (
+      <div role="alert">
+        <p>Something went wrong:</p>
+        <pre>{error.message}</pre>
+        <button onClick={resetErrorBoundary}>Try again</button>
+      </div>
+    )
+  }
+
   return (
+    <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+    onReset={() => {
+      // reset the state of your app so the error doesn't happen again
+    }}
+  >
     <Display 
       timer={timer} 
       del={<Button 
@@ -145,6 +163,8 @@ const _id = useRef(id);
       isEditing={isEditing}
       tid={_id.current}
     />
+  </ErrorBoundary>
+    
     )
 };
 

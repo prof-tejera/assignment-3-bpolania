@@ -12,6 +12,7 @@ import XY from "../components/timers/XY";
 import Tabata from "../components/timers/Tabata";
 
 import '../css/style.css';
+import {ErrorBoundary} from 'react-error-boundary'
 
 const Timers = styled.div`
   display: flex;
@@ -382,7 +383,23 @@ const TimersView = () => {
   const endButton = <div>
                     <Button title={"Reset"} onClick={handleEndClick} className={"form"} id={"timers-end-button"}/></div>
 
+  function ErrorFallback({error, resetErrorBoundary}) {
+    return (
+      <div role="alert">
+        <p>Something went wrong:</p>
+        <pre>{error.message}</pre>
+        <button onClick={resetErrorBoundary}>Try again</button>
+      </div>
+    )
+  }
+
   return (
+    <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+    onReset={() => {
+      // reset the state of your app so the error doesn't happen again
+    }}
+  >
     <Timers>
     <div className="title"> Total Time for this Workout {formatTime(localStorage.getItem("total"))}</div>
     <div className="title">Timers after Timers</div>
@@ -399,6 +416,8 @@ const TimersView = () => {
       {timers.length > 0 ? buttons : null}
       {timers.length > 0 ? endButton : null}
     </Timers>
+  </ErrorBoundary>
+    
   );
 };
 

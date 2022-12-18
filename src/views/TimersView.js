@@ -11,8 +11,7 @@ import Countdown from "../components/timers/Countdown";
 import XY from "../components/timers/XY";
 import Tabata from "../components/timers/Tabata";
 
-import '../css/style.css'; 
-
+import '../css/style.css';
 
 const Timers = styled.div`
   display: flex;
@@ -41,19 +40,19 @@ const TimersView = () => {
   const [newComment, setNewComment] = useState();
   const [prevComment, setPrevComment] = useState();
   const [pendingUpdates, setPendingUpdates] = useState([{}]);
-
+  
   //// Dragable
 
   let draggingEle;
   let x = 0;
   let y = 0;
-  let elements;
+  
 
   let placeholder;
   let isDraggingStarted = false;
 
-
   const mouseDownHandler = function (e) {
+
     draggingEle = e.target;
     const rect = draggingEle.getBoundingClientRect();
       x = e.pageX - rect.left;
@@ -112,7 +111,6 @@ const TimersView = () => {
         }
       }
     }
-    console.log(buffer);
     setTimers(buffer.slice());
   };
 
@@ -139,7 +137,10 @@ const TimersView = () => {
       return rectA.top + rectA.height / 2 < rectB.top + rectB.height / 2;
   };
 
-  
+  let elements = document.getElementsByClassName("draggable");
+    for(var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener('mousedown', mouseDownHandler);
+    }
 
   // effects
 
@@ -154,7 +155,6 @@ const TimersView = () => {
   },[newRound])
 
   useEffect(() => {
-    
   },[updater])
 
   useEffect(() => {
@@ -185,11 +185,6 @@ const TimersView = () => {
     if (timers.length > 0) {
       setActive(timers[0].id);
     }
-    elements = document.getElementsByClassName("draggable");
-    for(var i = 0; i < elements.length; i++) {
-      elements[i].addEventListener('mousedown', mouseDownHandler);
-    }
-
   },[])
 
   useEffect(() => {
@@ -389,7 +384,7 @@ const TimersView = () => {
 
   return (
     <Timers>
-    <div className="title"> Total Time for this Workout {formatTime(total.current)}</div>
+    <div className="title"> Total Time for this Workout {formatTime(localStorage.getItem("total"))}</div>
     <div className="title">Timers after Timers</div>
       {timers.map((timer, index) => (
         <Timer key={`timer-${timer.id}`} className="draggable" id={index + 1}>

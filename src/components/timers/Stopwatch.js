@@ -45,6 +45,7 @@ const Stopwatch = ({id}, visibility='block') => {
         elapsedTime === 0 ? setIsZero(true) : setIsZero(false);
         setElapsedTime(elapsedTime + 1000);
         total.current = total.current + 1000;
+        localStorage.setItem("total", total.current); 
         setUpdater(total.current);
       },
       !isPaused ? 1000 : null,

@@ -20,6 +20,7 @@ const _id = useRef(id);
     if (totalTime.current === 0) {
       totalTime.current = getTotalTime();
       total.current += (getTotalTime() * Number(rounds));
+      localStorage.setItem("total",total.current);
     }
     reset(totalTime.current, 1);
   },[])
@@ -89,8 +90,8 @@ const _id = useRef(id);
   const getTotalTime = () => {
     let total = 0;
     total += hours * 3600000;
-    total += total + (minutes * 60000);
-    total += (seconds * 1000);
+    total += minutes * 60000;
+    total += seconds * 1000;
     return total;
   }
 

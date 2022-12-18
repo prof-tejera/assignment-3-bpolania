@@ -19,10 +19,9 @@ const Tabata = ({work, rest, rounds, id, isEditing, visibility='block'}) => {
   const _id = useRef(id); 
 
     useEffect(() => {
-      if (totalTime.current === 0) {
-        total.current += Number(rounds) * (getTotalTime(work.hours,work.minutes,work.seconds) + getTotalTime(rest.hours,rest.minutes,rest.seconds));
-      }
+      total.current += Number(rounds) * (getTotalTime(work.hours,work.minutes,work.seconds) + getTotalTime(rest.hours,rest.minutes,rest.seconds));
       totalTime.current = getTotalTime(currentTimer.hours,currentTimer.minutes,currentTimer.seconds);
+      localStorage.setItem("total",total.current);
       reset(totalTime.current, currentRound);
     },[currentTimer])
 
@@ -57,8 +56,6 @@ const Tabata = ({work, rest, rounds, id, isEditing, visibility='block'}) => {
         if (time > 0) {
           setTime(time - 1000);
         } else {
-          console.log(time);
-          console.log(isWorkStateActive);
           if (isWorkStateActive) {
             console.log("working...",currentTimer);
             setNewWorkingStatus({id:_id.current, value: "Work!!!"});
@@ -102,8 +99,8 @@ const Tabata = ({work, rest, rounds, id, isEditing, visibility='block'}) => {
     const getTotalTime = (hours, minutes, seconds) => {
       let total = 0;
       total += hours * 3600000;
-      total += total + (minutes * 60000);
-      total += (seconds * 1000);
+      total += minutes * 60000;
+      total += seconds * 1000;
       return total;
     }
   

@@ -186,64 +186,61 @@ const AddView = () => {
 
   const handleOnChange = (event) => {
     let isNumber = /^\d+$/.test(event.target.value);
-    if (event.target.id.toLowerCase().indexOf("comment") === -1) {
-        if (isNumber || event.target.value === "") {
-          const ids = event.target.id.split("-");
-          if (ids[0]==='c') {
-            if (ids[1]==='hours') {
-              countdownTimerInfo.hours = event.target.value;
-            } else if (ids[1]==='minutes') {
-              countdownTimerInfo.minutes = event.target.value;
-            } else if (ids[1]==='seconds') {
-              countdownTimerInfo.seconds = event.target.value;
-            } else if (ids[1]==='rounds') {
-              countdownTimerInfo.rounds = event.target.value;
-            } else if (ids[1]==='comment') {
-              countdownTimerInfo.comment = event.target.value;
-            } 
-          } else if (ids[0]==='xy') {
-            if (ids[1]==='hours') {
-              xyTimerInfo.hours = event.target.value;
-            } else if (ids[1]==='minutes') {
-              xyTimerInfo.minutes = event.target.value;
-            } else if (ids[1]==='seconds') {
-              xyTimerInfo.seconds = event.target.value;
-            } else if (ids[1]==='rounds') {
-              xyTimerInfo.rounds = event.target.value;
-            } else if (ids[1]==='comment') {
-              xyTimerInfo.comment = event.target.value;
-            } 
-          } else if (ids[0]==='t') {
-            if (ids[1]==='hours') {
-              tabataTimerInfo.hours = event.target.value;
-            } else if (ids[1]==='minutes') {
-              tabataTimerInfo.minutes = event.target.value;
-            } else if (ids[1]==='seconds') {
-              tabataTimerInfo.seconds = event.target.value;
-            } else if (ids[1]==='rounds') {
-              tabataTimerInfo.rounds = event.target.value;
-            } else if (ids[1]==='comment') {
-              tabataTimerInfo.comment = event.target.value;
-            }  else if (ids[1]==='rest') {
-              if (ids[2]==='hours') {
-                tabataTimerInfo.rest_hours = event.target.value;
-              } else if (ids[2]==='minutes') {
-                tabataTimerInfo.rest_minutes = event.target.value;
-              } else if (ids[2]==='seconds') {
-                tabataTimerInfo.rest_seconds = event.target.value;
-              }
-            }
-          } else if (ids[0]==='s') {
-            if (ids[1]==='comment') {
-              stopwatchTimerInfo.comment = event.target.value;
-            } 
+    if (event.target.id.toLowerCase().indexOf("comment") === -1 && (!isNumber || !event.target.value === "")) {
+      event.target.value = "";
+      alert("Please type only numbers");
+    } else {
+      const ids = event.target.id.split("-");
+      if (ids[0]==='c') {
+        if (ids[1]==='hours') {
+          countdownTimerInfo.hours = event.target.value;
+        } else if (ids[1]==='minutes') {
+          countdownTimerInfo.minutes = event.target.value;
+        } else if (ids[1]==='seconds') {
+          countdownTimerInfo.seconds = event.target.value;
+        } else if (ids[1]==='rounds') {
+          countdownTimerInfo.rounds = event.target.value;
+        } else if (ids[1]==='comment') {
+          countdownTimerInfo.comment = event.target.value;
+        } 
+      } else if (ids[0]==='xy') {
+        if (ids[1]==='hours') {
+          xyTimerInfo.hours = event.target.value;
+        } else if (ids[1]==='minutes') {
+          xyTimerInfo.minutes = event.target.value;
+        } else if (ids[1]==='seconds') {
+          xyTimerInfo.seconds = event.target.value;
+        } else if (ids[1]==='rounds') {
+          xyTimerInfo.rounds = event.target.value;
+        } else if (ids[1]==='comment') {
+          xyTimerInfo.comment = event.target.value;
+        } 
+      } else if (ids[0]==='t') {
+        if (ids[1]==='hours') {
+          tabataTimerInfo.hours = event.target.value;
+        } else if (ids[1]==='minutes') {
+          tabataTimerInfo.minutes = event.target.value;
+        } else if (ids[1]==='seconds') {
+          tabataTimerInfo.seconds = event.target.value;
+        } else if (ids[1]==='rounds') {
+          tabataTimerInfo.rounds = event.target.value;
+        } else if (ids[1]==='comment') {
+          tabataTimerInfo.comment = event.target.value;
+        }  else if (ids[1]==='rest') {
+          if (ids[2]==='hours') {
+            tabataTimerInfo.rest_hours = event.target.value;
+          } else if (ids[2]==='minutes') {
+            tabataTimerInfo.rest_minutes = event.target.value;
+          } else if (ids[2]==='seconds') {
+            tabataTimerInfo.rest_seconds = event.target.value;
           }
-        } else {  
-          event.target.value = "";
-          alert("Please type only numbers");
         }
-    } 
-    
+      } else if (ids[0]==='s') {
+        if (ids[1]==='comment') {
+          stopwatchTimerInfo.comment = event.target.value;
+        } 
+      }
+    }
     
   }
 

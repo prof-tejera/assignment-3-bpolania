@@ -28,11 +28,6 @@ export const TimersContextProvider = ({ children }) => {
     }
   }, [timers])
 
-  // useEffect(() => {
-  //   console.log("A");
-  //   localStorage.clear();
-  // }, [])
-
   return (
     <TimersContext.Provider value={{ setTimers, 
                                      timers, 

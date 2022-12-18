@@ -21,6 +21,7 @@ const Countdown = ({hours, minutes, seconds, id, isEditing, visibility='inline-b
     if (totalTime.current === 0) {
       totalTime.current = getTotalTime();
       total.current += getTotalTime();
+      localStorage.setItem("total", total.current); 
     }
     resetTime(totalTime.current);
   },[])

@@ -129,7 +129,6 @@ const TimersView = () => {
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
 
-      
   };
 
   const isAbove = function (nodeA, nodeB) {

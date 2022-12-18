@@ -32,7 +32,7 @@ const Documentation = () => {
             },
             {
               prop: "onClick",
-              description: "Indicates wichh function shall be called when user clicks the button",
+              description: "Indicates wich function shall be called when user clicks the button",
               type: "string",
               defaultValue: "None",
             },

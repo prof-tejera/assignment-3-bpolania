@@ -1,4 +1,4 @@
-import {React } from "react";
+import {React, useState} from "react";
 import styled from "styled-components";
 
 import { useTimers } from "../components/contexts/TimersContext";
@@ -10,6 +10,9 @@ import Stopwatch from "../components/timers/Stopwatch";
 import Countdown from "../components/timers/Countdown";
 import XY from "../components/timers/XY";
 import Tabata from "../components/timers/Tabata";
+
+import '../css/style.css'; 
+
 
 const Timers = styled.div`
   display: flex;
@@ -33,7 +36,112 @@ const TimerWorkStatus = styled.div``;
 
 const TimersView = () => {
 
-  const { setTimers, timers, newRound, newWorkingStatus, setActive, active, setAction, action, deleteTimer, setDeleteTimer, total, updater, next, setNext } = useTimers();
+  const { setTimers, timers, newRound, newWorkingStatus, setActive, active, setAction, action, deleteTimer, setDeleteTimer, total, updater, next, setNext, editTimer, updateHours, reloadTimer, setReloadTimer } = useTimers();
+
+  const [newComment, setNewComment] = useState();
+  const [prevComment, setPrevComment] = useState();
+  const [pendingUpdates, setPendingUpdates] = useState([{}]);
+
+  //// Dragable
+
+  let draggingEle;
+  let x = 0;
+  let y = 0;
+  let elements;
+
+  let placeholder;
+  let isDraggingStarted = false;
+
+
+  const mouseDownHandler = function (e) {
+    draggingEle = e.target;
+    const rect = draggingEle.getBoundingClientRect();
+      x = e.pageX - rect.left;
+      y = e.pageY - rect.top;
+
+      document.addEventListener('mousemove', mouseMoveHandler);
+      document.addEventListener('mouseup', mouseUpHandler);
+    };
+
+  const mouseMoveHandler = function (e) {
+
+    const draggingRect = draggingEle.getBoundingClientRect();
+
+    if (!isDraggingStarted) {
+          isDraggingStarted = true;
+          placeholder = document.createElement('div');
+          placeholder.classList.add('placeholder');
+          draggingEle.parentNode.insertBefore(
+              placeholder,
+              draggingEle.nextSibling
+          );
+          placeholder.style.height = `${draggingRect.height}px`;
+      }
+    draggingEle.style.position = 'absolute';
+    draggingEle.style.top = `${e.pageY - y}px`;
+    draggingEle.style.left = `${e.pageX - x}px`;
+
+    const prevEle = draggingEle.previousElementSibling;
+    const nextEle = placeholder.nextElementSibling;
+
+    const swap = function (nodeA, nodeB) {
+        const parentA = nodeA.parentNode;
+        const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
+    
+        nodeB.parentNode.insertBefore(nodeA, nodeB);
+    
+        parentA.insertBefore(nodeB, siblingA);
+    };
+
+    if (prevEle && isAbove(draggingEle, prevEle)) {
+        swap(placeholder, draggingEle);
+        swap(placeholder, prevEle);
+        return;
+    }
+
+    if (nextEle && isAbove(nextEle, draggingEle)) {
+        swap(nextEle, placeholder);
+        swap(nextEle, draggingEle);
+    }
+
+    let buffer = [];
+    for (let i = 0; i < elements.length; i++) {
+      for (let j = 0; j < timers.length; j++) {
+        if(Number(elements[i].id) === Number(timers[j].id)) {
+          buffer.push(timers[j]);
+        }
+      }
+    }
+    console.log(buffer);
+    setTimers(buffer.slice());
+  };
+
+  const mouseUpHandler = function () {
+     placeholder && placeholder.parentNode.removeChild(placeholder);
+     isDraggingStarted = false;
+      draggingEle.style.removeProperty('top');
+      draggingEle.style.removeProperty('left');
+      draggingEle.style.removeProperty('position');
+
+      x = null;
+      y = null;
+      draggingEle = null;
+
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+
+      
+  };
+
+  const isAbove = function (nodeA, nodeB) {
+      const rectA = nodeA.getBoundingClientRect();
+      const rectB = nodeB.getBoundingClientRect();
+      return rectA.top + rectA.height / 2 < rectB.top + rectB.height / 2;
+  };
+
+  
+
+  // effects
 
   useEffect(() => {
     for (let i = 0; i < timers.length; i++) {
@@ -77,6 +185,11 @@ const TimersView = () => {
     if (timers.length > 0) {
       setActive(timers[0].id);
     }
+    elements = document.getElementsByClassName("draggable");
+    for(var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener('mousedown', mouseDownHandler);
+    }
+
   },[])
 
   useEffect(() => {
@@ -88,8 +201,96 @@ const TimersView = () => {
   },[deleteTimer])
 
   useEffect(() => {
+    if (editTimer) {
+      for (let i = 0; i < timers.length; i++) {
+        if (timers[i].id === Number(editTimer.id)) {
+          let ie = timers[i].isEditing;
+          timers[i].isEditing = !ie;
+          setPrevComment(timers[i].comment);
+          setNewComment(timers[i].comment);
+          timers[i].comment = newComment;
+          timers[i].C = <Countdown
+            isEditing={timers[i].isEditing} 
+            hours={timers[i].C.hours} 
+            minutes={timers[i].C.minutes} 
+            seconds={timers[i].C.seconds}
+            id={timers[i].id} 
+            />;
+          const newTimers = timers.slice();
+          setTimers(newTimers);
+        } 
+      }
+      
+      for (let j = 0; j < pendingUpdates.length; j++) {
+        for (let i = 0; i < timers.length; i++) {
+          if (timers[i].id === Number(pendingUpdates[j].id)) {
+            timers[i].C = <Countdown
+              isEditing={timers[i].isEditing} 
+              hours={pendingUpdates[j].hours} 
+              minutes={pendingUpdates[j].minutes} 
+              seconds={pendingUpdates[j].seconds}
+              id={timers[i].id} 
+              />;
+            const anewTimers = timers.slice();
+            setReloadTimer(reloadTimer+1);
+            setTimers(anewTimers);
+          } 
+        }
+      }
+      for (let i = 0; i < timers.length; i++) {
+        if (timers[i].id === Number(editTimer.id)) {
+          const newTimers = timers.slice();
+          setTimers(newTimers);
+        } 
+      }
+    }
+    
+  },[editTimer])
+
+  useEffect(() => {
+    if (pendingUpdates[0] === 0) setPendingUpdates([]);
+    if (pendingUpdates.length > 0) {
+      for (let i = 0; i < pendingUpdates.length; i++) {
+        if (pendingUpdates[i].id === undefined) {
+          pendingUpdates[i] = updateHours;
+        } else {
+          if (pendingUpdates[i].id === updateHours.id) {
+            if (updateHours.hours === undefined) {
+              updateHours.hours = pendingUpdates[i].hours;
+            }
+            if (updateHours.minutes === undefined) {
+              updateHours.minutes = pendingUpdates[i].minutes;
+            }
+            if (updateHours.seconds === undefined) {
+              updateHours.seconds = pendingUpdates[i].seconds;
+            }
+            pendingUpdates[i] = updateHours
+          } else {
+            if (pendingUpdates[i].id !== undefined) {
+              pendingUpdates.push(updateHours);
+            }
+          }
+        }
+      }
+    }
+    if (pendingUpdates.length > 0) {
+      const u = pendingUpdates.slice();
+      setPendingUpdates(u);
+    }
+
+  },[updateHours])
+
+
+  useEffect(() => {
     setDeleteTimer();
   },[timers])
+
+  const handleTimerDescriptionChange = (event) => {
+    setPrevComment(event.target.value);
+    setNewComment(event.target.value);
+  }
+
+  // Handlers and functions
 
   const buildTimersFromJson = (timers) => {
     let result = [];
@@ -103,6 +304,7 @@ const TimersView = () => {
           hours={timers[i].C.props.hours}
           minutes={timers[i].C.props.minutes}
           seconds={timers[i].C.props.seconds}
+          isEdting={timers[i].C.props.isEditing}
           id={timers[i].id}/> };
       }
       if (timers[i].title === "XY") {
@@ -189,14 +391,15 @@ const TimersView = () => {
     <Timers>
     <div className="title"> Total Time for this Workout {formatTime(total.current)}</div>
     <div className="title">Timers after Timers</div>
-      {timers.map((timer) => (
-        <Timer key={`timer-${timer.id}`}>
+      {timers.map((timer, index) => (
+        <Timer key={`timer-${timer.id}`} className="draggable" id={index + 1}>
           <TimerTitle>{timer.title}</TimerTitle>
           {timer.currentRound ? <TimerRound>Round {timer.currentRound}/{timer.rounds}</TimerRound> : null}
           <TimerWorkStatus>{timer.workingStatus}</TimerWorkStatus>
-          <TimerTitle>{timer.comment}</TimerTitle>
+          {timer.isEditing ? <input className="timerInput" value={prevComment} onChange={handleTimerDescriptionChange}></input> : <TimerTitle>{timer.comment}</TimerTitle>}
           {timer.C}
-        </Timer> 
+        </Timer>
+        
       ))}
       {timers.length > 0 ? buttons : null}
       {timers.length > 0 ? endButton : null}

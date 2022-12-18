@@ -6,14 +6,14 @@ import  Display  from '../generic/Display'
 import { useInterval } from 'usehooks-ts'
 import { useTimers } from "../contexts/TimersContext";
 
-const XY = ({hours, minutes, seconds, rounds, id, visibility='block'}) => {
+const XY = ({hours, minutes, seconds, rounds, id, isEditing, visibility='block'}) => {
 
 const [timer, setTimer] = useState('00:00:00');
 const [isPaused, setIsPaused] = useState(true);
 const [time, setTime] = useState(0);
 const totalTime = useRef(0);
 const [currentRound, setCurrentRound] = useState(1);
-const { setNewRound, active, action, setAction, setDeleteTimer, total, setNext, next } = useTimers();
+const { setNewRound, active, action, setAction, setDeleteTimer, setEditTimer,total, setNext, next } = useTimers();
 const _id = useRef(id);
 
   useEffect(() => {
@@ -101,6 +101,13 @@ const _id = useRef(id);
     total.current -= (getTotalTime() * Number(rounds));
   }
 
+  const handleEditClick = () => {
+    const idc = { id: _id.current };
+    setEditTimer({ ...idc, id : _id.current });
+    setIsPaused(true);
+    setAction("pause");
+  }
+
   const handlePauseClick = () => {
     setNewRound({id:_id.current, value: 1});
     setIsPaused(!isPaused);
@@ -127,7 +134,15 @@ const _id = useRef(id);
           id={"reset"} 
           title={"Delete"}
           disabled={false}></Button>}
+      edit={<Button 
+          onClick={handleEditClick} 
+          className={"btn"} 
+          id={"reset"} 
+          title={isEditing ? "Save" : "Edit"}
+          disabled={false}></Button>}
       visibility={visibility}
+      isEditing={isEditing}
+      tid={_id.current}
     />
     )
 };

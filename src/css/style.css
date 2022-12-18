@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 12vh;
+    height: 15vh;
     background-color: #012d9d;
 }
   
@@ -166,4 +166,11 @@ Text {
     display: flex;
 }
 
+.timerInput {
+    width: 120px;
+}
 
+.draggable {
+    cursor: move;
+    user-select: none;
+}

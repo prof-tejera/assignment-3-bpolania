@@ -6,7 +6,7 @@ import  Display  from '../generic/Display'
 import { useInterval } from 'usehooks-ts'
 import { useTimers } from "../contexts/TimersContext";
 
-const Tabata = ({work, rest, rounds, id, visibility='block'}) => {
+const Tabata = ({work, rest, rounds, id, isEditing, visibility='block'}) => {
 
   const [timer, setTimer] = useState('00:00:00');
   const [isPaused, setIsPaused] = useState(true);
@@ -15,7 +15,7 @@ const Tabata = ({work, rest, rounds, id, visibility='block'}) => {
   const [currentRound, setCurrentRound] = useState(1);
   const [currentTimer, setCurrentTimer] = useState(work);
   const [isWorkStateActive, setIsWorkStateActive] = useState(true);
-  const { setNewRound, setNewWorkingStatus, active, action, setAction, setDeleteTimer, total, setNext, next  } = useTimers();
+  const { setNewRound, setNewWorkingStatus, active, action, setAction, setEditTimer, setDeleteTimer, total, setNext, next  } = useTimers();
   const _id = useRef(id); 
 
     useEffect(() => {
@@ -124,6 +124,13 @@ const Tabata = ({work, rest, rounds, id, visibility='block'}) => {
       setIsPaused(true);
       reset(0, 0);
     }
+
+    const handleEditClick = () => {
+      const idc = { id: _id.current };
+      setEditTimer({ ...idc, id : _id.current });
+      setIsPaused(true);
+      setAction("pause");
+    }
   
     const reset = (t, r) => {
       setTime(t);
@@ -142,7 +149,15 @@ const Tabata = ({work, rest, rounds, id, visibility='block'}) => {
             id={"reset"} 
             title={"Delete"}
             disabled={false}></Button>}
+        edit={<Button 
+          onClick={handleEditClick} 
+          className={"btn"} 
+          id={"reset"} 
+          title={isEditing ? "Save" : "Edit"}
+          disabled={false}></Button>}
         visibility={visibility}
+        isEditing={isEditing}
+        tid={_id.current}
       />
       )
   };

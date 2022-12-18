@@ -8,14 +8,14 @@ import { useInterval } from 'usehooks-ts'
 import { useTimers } from "../contexts/TimersContext";
 
 
-const Countdown = ({hours, minutes, seconds, id, comment, visibility='block'}) => {
+const Countdown = ({hours, minutes, seconds, id, isEditing, visibility='inline-block'}) => {
   const [timer, setTimer] = useState('00:00:00');
   const [isPaused, setIsPaused] = useState(true);
   const [time, setTime] = useState(0);
   const totalTime = useRef(0);
   const _id = useRef(id);
 
-  const { active, action, setAction, setDeleteTimer, total, next, setNext } = useTimers();
+  const { active, action, setAction, setDeleteTimer, setEditTimer, total, next, setNext, reloadTimer } = useTimers();
 
   useEffect(() => {
     if (totalTime.current === 0) {
@@ -24,6 +24,12 @@ const Countdown = ({hours, minutes, seconds, id, comment, visibility='block'}) =
     }
     resetTime(totalTime.current);
   },[])
+
+  useEffect(() => {
+    totalTime.current = getTotalTime();
+    total.current = getTotalTime();
+    resetTime(totalTime.current);
+  },[reloadTimer])
 
   useEffect(() => {
     if (active === _id.current && isPaused) {
@@ -82,7 +88,7 @@ const Countdown = ({hours, minutes, seconds, id, comment, visibility='block'}) =
   const getTotalTime = () => {
     let total = 0;
     total += hours * 3600000;
-    total += total + (minutes * 60000);
+    total += (minutes * 60000);
     total += (seconds * 1000);
     return total;
   }
@@ -98,6 +104,13 @@ const Countdown = ({hours, minutes, seconds, id, comment, visibility='block'}) =
     setIsPaused(true);
     setAction("pause");
     total.current -= getTotalTime();
+  }
+  
+  const handleEditClick = () => {
+    const idc = { id: _id.current };
+    setEditTimer({ ...idc, id : _id.current });
+    setIsPaused(true);
+    setAction("pause");
   }
 
   const handlePauseClick = () => {
@@ -124,7 +137,15 @@ const Countdown = ({hours, minutes, seconds, id, comment, visibility='block'}) =
           id={"reset"} 
           title={"Delete"}
           disabled={false}></Button>}
+      edit={<Button 
+          onClick={handleEditClick} 
+          className={"btn"} 
+          id={"reset"} 
+          title={isEditing ? "Save" : "Edit"}
+          disabled={false}></Button>}
       visibility={visibility}
+      isEditing={isEditing}
+      tid={_id.current}
     />
     )
 }

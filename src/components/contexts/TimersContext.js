@@ -9,8 +9,12 @@ export const TimersContextProvider = ({ children }) => {
   const [active, setActive] = useState(true);
   const [action, setAction] = useState();
   const [deleteTimer, setDeleteTimer] = useState();
+  const [editTimer, setEditTimer] = useState(0);
   const [next, setNext] = useState(0);
   const [updater, setUpdater] = useState(0);
+  const [updateHours, setUpdateHours] = useState(0);
+  const [reloadTimer, setReloadTimer] = useState(0);
+  
   const total= useRef(0);
 
   useEffect(() => {
@@ -41,12 +45,19 @@ export const TimersContextProvider = ({ children }) => {
                                      action, 
                                      setAction, 
                                      deleteTimer, 
-                                     setDeleteTimer, 
+                                     setDeleteTimer,
+                                     editTimer, 
+                                     setEditTimer, 
                                      total, 
                                      updater, 
                                      setUpdater, 
                                      next, 
-                                     setNext}}>
+                                     setNext,
+                                     updateHours,
+                                     setUpdateHours,
+                                     reloadTimer,
+                                     setReloadTimer
+                                     }}>
       {children}
     </TimersContext.Provider>
   );
